@@ -132,7 +132,7 @@ if ($date_arr->num_rows > 0) {
     }
     echo '  </div>';
     echo '  <div class="footer">';
-    echo '    <p>Copyright &copy; 2021 Screen Network S.A.</p>';
+    echo '    <p>Copyright &copy; 2021 ***</p>';
     echo '    <p>Made by <a href="http://exiges.pl">Exiges</a></p>';
     echo '  </div>';
   }
