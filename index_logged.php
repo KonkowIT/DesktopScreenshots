@@ -98,43 +98,70 @@ if ($date_arr->num_rows > 0) {
     </div>
   </form>
   <?php
-  echo '<div id="result" class="main-box">';
+    echo '<div id="result" class="main-box">';
   if (isset($_GET['siec']) || isset($_GET['status'])) {
     $net = $_GET['siec'];
     $state = $_GET['status'];
     $records = mysqli_query($conn, "SELECT * FROM desktop_ss WHERE siec LIKE '$net' AND connection LIKE '$state' ORDER BY sn;");
+  } else {
+    $table = mysqli_query($conn, "SELECT siec, count(siec) AS siec_cntr, COUNT(IF (`connection` = 1, 1, NULL)) AS conn_cntr, COUNT(IF (download_error = 1, 1, NULL)) AS download_cntr from desktop_ss group by siec;");
+    if ($table->num_rows > 0) {
+      echo '  <table class="table table-hover table-dark summary">
+    <thead class="table-dark">
+      <tr>
+        <th>Sieć</th>
+        <th>Wszystkie</th>
+        <th>Połączone</th>
+        <th>Niepołączone</th>
+        <th>Bład pobierania</th>
+      </tr>
+    </thead>
+    <tbody>';
+      while ($t = mysqli_fetch_array($table)) {
+        echo '      <tr>
+          <td class="summary-net">' . $t['siec'] .'</td>
+          <td>' . $t['siec_cntr'] .'</td>
+          <td>' . $t['conn_cntr'] .'</td>
+          <td>' . ($t['siec_cntr'] - $t['conn_cntr']) .'</td>
+          <td>' . $t['download_cntr'] .'</td>
+        </tr>';
+      };
+      echo '    </tbody>
+  </table>';
+    };
   };
+
   if ($records->num_rows < 1) {
-    echo '  <div class="empty-array">';
-    echo '    <p>Brak komputerów dla wybranych parametrów</p>';
-    echo '  </div>';
+    echo '  <div class="empty-array">
+    <p>Brak komputerów dla wybranych parametrów</p>
+  </div>';
   } else {
     echo '  <div class="grid-container">';
     while ($r = mysqli_fetch_array($records)) {
-      echo '    <div class="grid-container-cell">';
-      echo '      <img src="./ss/' . $r['sn'] . '/screenshot.jpg" alt="' . $r['sn'] . '" onclick="window.open(this.src,' . "'_blank'" . ');">';
-      echo '      <table>';
-      echo '        <tr>';
-      echo '          <th class="grid-item-text">' . $r['sn'] . '</th>';
-      echo '          <td class="grid-item-text">' . $r['placowka'] . '</th>';
-      echo '        </tr>';
-      echo '      </table>';
-      echo '      <div class="btn-container">';
+      echo '    <div class="grid-container-cell">
+      <img src="./ss/' . $r['sn'] . '/screenshot.jpg" alt="' . $r['sn'] . '" onclick="window.open(this.src,' . "'_blank'" . ');">
+      <table>
+        <tr>
+          <th class="grid-item-text">' . $r['sn'] . '</th>
+          <td class="grid-item-text">' . $r['placowka'] . '</th>
+        </tr>
+      </table>
+      <div class="btn-container">';
       if ($r['ip'] != 'NULL'){
-        echo '        <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snftp://' . $r['ip'] . "'" . '">FTP</button>';
-        echo '        <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snvnc://' . $r['ip'] . "'" . '">VNC</button>';
+        echo '        <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snftp://' . $r['ip'] . "'" . '">FTP</button>
+        <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snvnc://' . $r['ip'] . "'" . '">VNC</button>';
       } else {
-        echo '        <button type="button" class="btn btn-sm" disabled>FTP</button>';
-        echo '        <button type="button" class="btn btn-sm" disabled>VNC</button>';
+        echo '        <button type="button" class="btn btn-sm" disabled>FTP</button>
+        <button type="button" class="btn btn-sm" disabled>VNC</button>';
       }
-      echo '      </div>';
-      echo '    </div>';
+      echo '      </div>
+    </div>';
     }
-    echo '  </div>';
-    echo '  <div class="footer">';
-    echo '    <p>Copyright &copy; 2021 ***</p>';
-    echo '    <p>Made by <a href="http://exiges.pl">Exiges</a></p>';
-    echo '  </div>';
+    echo '  </div>
+  <div class="footer">
+    <p>Copyright &copy; 2021 ***</p>
+    <p>Made by <a href="http://exiges.pl">Exiges</a></p>
+  </div>';
   }
   echo '</div>';
   mysqli_close($conn);
