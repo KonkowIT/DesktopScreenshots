@@ -68,8 +68,8 @@ if ($date_arr->num_rows > 0) {
             <div class="select">
                 <select class="select-text" required name='siec'>
                     <option selected disabled></option>
-                    <option value="%">Wszystkie sieci</option>
                     <?php
+                    echo '<option value="%" ' . ($_GET['siec'] == '%' ? 'selected' : '') . '>Wszystkie sieci</option>';
                     $records = mysqli_query($conn, "SELECT siec From desktop_ss GROUP BY siec;");
                     while ($data = mysqli_fetch_array($records)) {
                         echo "<option value='" . $data['siec'] . "' " . ($_GET['siec'] == $data['siec'] ? 'selected' : '') . ">" . $data['siec'] . "</option>";
@@ -84,9 +84,9 @@ if ($date_arr->num_rows > 0) {
                 <select class="select-text" required name='status'>
                     <option selected disabled></option>
                     <?php
-                    echo "<option value='%' " . ($_GET['status'] == '%' ? 'selected' : ''). ">Wszystkie statusy</option>
-                    <option value='1' " . ($_GET['status'] == '1' ? 'selected' : ''). ">Połączony</option>
-                    <option value='0' " . ($_GET['status'] == '0' ? 'selected' : ''). ">Niepołączony</option>";
+                    echo "<option value='%' " . ($_GET['status'] == '%' ? 'selected' : '') . ">Wszystkie statusy</option>
+                    <option value='1' " . ($_GET['status'] == '1' ? 'selected' : '') . ">Połączony</option>
+                    <option value='0' " . ($_GET['status'] == '0' ? 'selected' : '') . ">Niepołączony</option>";
                     ?>
                 </select>
                 <span class="select-highlight"></span>
