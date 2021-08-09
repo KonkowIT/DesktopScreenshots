@@ -247,10 +247,7 @@ Foreach ($comp in $dbActual) {
       return $tbl
     }
 
-    if (Test-path $downloadDir) {
-      gci $downloadDir | % {Remove-item $_.FullName -Force -Recurse}
-    }
-    else {
+    if (!(Test-path $downloadDir)) {
       New-item $downloadDir -ItemType Directory -Force | out-null
     }
 
@@ -276,6 +273,10 @@ Foreach ($comp in $dbActual) {
         
           $fileList = ($session.ListDirectory("/screennetwork/player")).Files
           $fileList | Where-Object { $_.Name -eq "screenshot.jpg" } | ForEach-Object {
+            if (Test-Path "$downloadDir\screenshot.jpg") {
+              Remove-Item "$downloadDir\screenshot.jpg" -Force
+            }
+            
             if ($_.LastWriteTime -gt ((get-date).AddMinutes(-30))) {
               Write-host "`nDownloading screenshot from:"$sn" - "$lok
               $result = $session.GetFiles("/screennetwork/player/screenshot.jpg", "$downloadDir\screenshot.jpg", $False, $transferOptions)
@@ -302,13 +303,11 @@ Foreach ($comp in $dbActual) {
       }
       catch {
         Write-host "`nKomputer jest niepolaczony: $sn - $lok"  -ForegroundColor Red
-        copy-item "$homeDir\errorConnection.jpg" -Destination "$downloadDir\screenshot.jpg" -Force
         sql -ins_upd -request  "UPDATE desktop_ss SET connection = false, download_error = false WHERE sn = '$sn';"
       }
     }
     else {
       Write-host "`nKomputer jest niepolaczony: $sn - $lok"  -ForegroundColor Red
-      copy-item "$homeDir\errorConnection.jpg" -Destination "$downloadDir\screenshot.jpg" -Force
       sql -ins_upd -request  "UPDATE desktop_ss SET connection = false, download_error = false WHERE sn = '$sn';"
     }
   }
