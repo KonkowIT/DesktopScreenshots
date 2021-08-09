@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Roboto:wght@300&display=swap');
+
 * {
   box-sizing: border-box;
 }
@@ -206,6 +209,22 @@ p.nav-text {
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
+.grid-container-cell.disconnected {
+  background-color: #802129;
+  border: 1px solid #6d1c23;
+}
+
+img { 
+  max-width: 99%;
+  max-height: 197px;
+  height: 197px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
+}
+
+.grid-container-cell.disconnected img {
+  height: 17rem;
+}
+
 .grid-container-cell:hover {
   box-shadow: 0 10px 20px rgba(0, 144, 196, 0.19), 0 6px 6px rgba(0, 144, 196, 0.23);
 }
@@ -215,21 +234,31 @@ p.nav-text {
   font-size: 1.5rem;
 }
 
+.grid-item-text.disc-time {
+  text-overflow: unset;
+  white-space: nowrap;
+  width: 100%;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
 table {
   margin-top: 0.5rem;
+  table-layout: fixed;
+  width: 100%;
 }
 
 th {
-  padding: 0.5rem 0.5rem 0 2.5rem;
+  padding: 0.5rem 0.5rem 0 1rem;
+  text-align: center;
 }
 
 td {
-  padding: 0.5rem 1rem 0 0.5rem;
+  padding: 0.5rem 1rem 0 1.5rem;
   text-align: start;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 22rem;
 }
 
 td:hover {
@@ -239,13 +268,6 @@ td:hover {
 .empty-array {
   padding: 10rem 0 0 0;
   font-size: 2rem;
-}
-
-img { 
-  max-width: 99%;
-  max-height: 197px;
-  height: 197px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
 }
 
 #sn_logo {
@@ -294,9 +316,69 @@ img {
   font-weight: 600;
 }
 
+.table thead tr th {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5) !important;
+}
+
+.summary {
+  max-width: 60%;
+  margin: 5rem auto 0 auto;
+}
+.summary td {
+  text-align: center;
+  padding: 10px 10px 0;
+}
+
+.summary tr {
+  padding-bottom: 10px;
+}
+
+.summary td.summary-net {
+  text-align: left;
+  padding-left: 2rem;
+}
+
+.footer a {
+  color: #dae9ff;
+}
+
+.footer a {
+  color: #dae9ff;
+}
+
 @media only screen and (hover: none) and (pointer: coarse) {  
+  nav div {
+    font-size: 2.5rem;
+  }
+
+  nav div svg {
+    display: none;
+  }
+
   .update-time {
     display: none;
+  }
+
+  .search-box {
+    padding: 11rem 0 2rem 0;
+  }
+
+  .select-text {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .select-label {
+    font-size: 3rem;
+    top: 0;
+  }
+
+  .select-text:focus ~ .select-label, .select-text:valid ~ .select-label {
+    font-size: 2.25rem;
+  }
+
+  .main-box {
+    margin: 21rem auto 0 auto;
   }
 
   .btn-container {
@@ -304,8 +386,7 @@ img {
   }
 
   .grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-    grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   }
 
   img {
@@ -314,15 +395,39 @@ img {
     height: 250px;
   }
 
+  table {
+    margin: 2rem 0 0.5rem 0;
+  }
+
   th {
-    padding: 0.5rem 1rem 1rem 9rem;
+    padding: 0.5rem 0 1rem 1rem;
   }
 
   td {
-    padding: 0.5rem 1rem 1rem 0.5rem;
+    padding: 0.5rem 1rem 1rem 3rem;
   }
 
   .grid-item-text {
-    font-size: 2.2rem;
+    font-size: 3rem;
+  }
+
+  .grid-item-text.disc-time {
+    font-size: 2.5rem;
+  }
+
+  table.table.table-hover.table-dark.summary {
+    display: none;
+  }
+
+  .grid-container-cell.disconnected img {
+    height: 53%;
+  }
+
+  .footer {
+    font-size: 2rem;
+  }
+
+  .btn.btn-primary.mb-2 {
+    font-size: 2.5rem;
   }
 }
