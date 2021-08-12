@@ -157,14 +157,16 @@ if ($date_arr->num_rows > 0) {
         </tr>
       </table>
       <div class="btn-container">';
-            if ($r['ip'] != 'NULL') {
-                echo '        <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snftp://' . $r['ip'] . "'" . '">FTP</button>
-        <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snvnc://' . $r['ip'] . "'" . '">VNC</button>';
-            } else {
-                echo '        <button type="button" class="btn btn-sm" disabled>FTP</button>
-        <button type="button" class="btn btn-sm" disabled>VNC</button>';
-            }
-            echo '      </div>
+      if ($r['ip'] != 'NULL') {
+          echo '        <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snftp://' . $r['ip'] . "'" . '">FTP</button>
+        <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snvnc://' . $r['ip'] . "'" . '">VNC</button>
+        <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snssh://' . $r['ip'] . "'" . '">SSH</button>';
+      } else {
+          echo '        <button type="button" class="btn btn-sm" disabled>FTP</button>
+        <button type="button" class="btn btn-sm" disabled>VNC</button>
+        <button type="button" class="btn btn-sm" disabled>SSH</button>';
+      }
+      echo '      </div>
     </div>';
         }
         echo '  </div>
