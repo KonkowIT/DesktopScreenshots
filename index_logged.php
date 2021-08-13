@@ -22,7 +22,14 @@ if ($date_arr->num_rows > 0) {
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
     <link rel="stylesheet" type="text/css" href="normalize.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link data-require="bootstrap@3.3.7" data-semver="3.3.7" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="style.css" />
@@ -148,7 +155,7 @@ if ($date_arr->num_rows > 0) {
       <table>
         <tr>';
             if ($r['connection'] == 0) {
-                echo '          <td  colspan="5" class="grid-item-text disc-time">Ostatni zrzut: ' . date("d-m-Y H:i", filemtime('./ss/' . $r['sn'] . '/screenshot.jpg')) . '</td>
+                echo '          <td  colspan="5" class="grid-item-text disc-time">Ostatni zrzut: ' . substr_replace(substr_replace(date("dmY H:i", filemtime('./ss/' . $r['sn'] . '/screenshot.jpg')), "/", 2, 0), "/", 5, 0)  . '</td>
         </tr>
         <tr>';
             }
@@ -160,7 +167,8 @@ if ($date_arr->num_rows > 0) {
       if ($r['ip'] != 'NULL') {
           echo '        <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snftp://' . $r['ip'] . "'" . '">FTP</button>
         <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snvnc://' . $r['ip'] . "'" . '">VNC</button>
-        <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snssh://' . $r['ip'] . "'" . '">SSH</button>';
+        <button type="button" class="btn btn-sm" onclick="location.href=' . "'" . 'snssh://' . $r['ip'] . "'" . '">SSH</button>
+        <input class="reload" type="button"  id="reload_' . $r['sn'] . '" onclick="reload(' . "'" . $r['ip'] . "', '" . $r['sn'] . "'" . ')" value="">';
       } else {
           echo '        <button type="button" class="btn btn-sm" disabled>FTP</button>
         <button type="button" class="btn btn-sm" disabled>VNC</button>
@@ -178,6 +186,32 @@ if ($date_arr->num_rows > 0) {
     echo '</div>';
     mysqli_close($conn);
     ?>
+    <script type="text/javascript">
+    function sleep(time) {
+      return new Promise((resolve) => setTimeout(resolve, time));
+    }
+
+    function reload(ipVal, snVal) {
+      console.log("Downloading new screenshot from computer: " + snVal + ", " + ipVal);
+      $.ajax({
+        url: 'reload.php',
+        type: 'POST',
+        data: {
+          ip: ipVal,
+          sn: snVal
+        },
+        success: function(data) {
+          if (data != "") {
+            console.log(data);
+          }
+        }
+      });
+
+      sleep(1000);
+      var url = $('#'+snVal).attr("src");
+      $('#'+snVal).attr("src", url + `?v=${Math.random()}`);
+    }
+  </script>
 </body>
 
 </html>
