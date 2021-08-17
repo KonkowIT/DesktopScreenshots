@@ -74,7 +74,7 @@ if ($date_arr->num_rows > 0) {
         <div class="search-box">
             <div class="select">
                 <select class="select-text" required name='siec'>
-                    <option selected disabled></option>
+                    <option style="display: none;" selected disabled></option>
                     <?php
                     echo '<option value="%" ' . ($_GET['siec'] == '%' ? 'selected' : '') . '>Wszystkie sieci</option>';
                     $records = mysqli_query($conn, "SELECT siec From desktop_ss GROUP BY siec;");
@@ -89,7 +89,7 @@ if ($date_arr->num_rows > 0) {
             </div>
             <div class="select">
                 <select class="select-text" required name='status'>
-                    <option selected disabled></option>
+                    <option style="display: none;" selected disabled></option>
                     <?php
                     echo "<option value='%' " . ($_GET['status'] == '%' ? 'selected' : '') . ">Wszystkie statusy</option>
                     <option value='1' " . ($_GET['status'] == '1' ? 'selected' : '') . ">Połączony</option>
