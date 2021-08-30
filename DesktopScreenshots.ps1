@@ -162,7 +162,7 @@ $db = sql -sel -request "SELECT * FROM desktop_ss;"
 # Creating / Updating records in database
 Foreach ($d in $apiData) {
   $db_chk = $db | ? { $_.sn -eq $d.sn }
-  if ($null -ne $db_chk) {
+  if ($null -ne $db_chk.sn) {
     if (($db_chk.placowka -ne $d.placowka) -or ($db_chk.lok_id -ne $d.lok_id) -or ($db_chk.ip -ne $d.ip) -or ($db_chk.siec -ne $d.siec)){
       "Updating record '$($d.sn)'"
       [array]$updt += "UPDATE desktop_ss SET placowka = '$($d.placowka)', lok_id = '$($d.lok_id)', ip = '$($d.ip)', siec = '$($d.siec)' WHERE sn = '$($d.sn)';"  
